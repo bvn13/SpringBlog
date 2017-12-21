@@ -29,28 +29,28 @@ configurations {
 
 dependencies {
     // spring boot
-    compile "org.springframework.boot:spring-boot-starter-web-services:1.5.8.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-jetty:1.5.8.RELEASE"
-    //compile "org.springframework.boot:spring-boot-starter-tomcat:1.5.8.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-thymeleaf:1.5.8.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-web-services:1.5.9.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-jetty:1.5.9.RELEASE"
+    //compile "org.springframework.boot:spring-boot-starter-tomcat:1.5.9.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf:1.5.9.RELEASE"
     compile "com.domingosuarez.boot:spring-boot-starter-jade4j:0.3.2"
-    compile "org.springframework.boot:spring-boot-starter-data-redis:1.5.8.RELEASE"
-    compile(group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.8.RELEASE') {
+    compile "org.springframework.boot:spring-boot-starter-data-redis:1.5.9.RELEASE"
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter', version:'1.5.9.RELEASE') {
         exclude(module: 'spring-boot-starter-logging')
     }
-    compile 'org.springframework.boot:spring-boot-starter-log4j2:1.5.8.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.8.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-security:1.5.8.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-log4j2:1.5.9.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.9.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:1.5.9.RELEASE'
 
     // spring framework
-    compile 'org.springframework:spring-context:4.3.12.RELEASE'
-    compile 'org.springframework:spring-webmvc:4.3.12.RELEASE'
+    compile 'org.springframework:spring-context:4.3.13.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.3.13.RELEASE'
     compile 'org.springframework.security:spring-security-config:4.2.3.RELEASE'
     compile 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
 
     //persistence
     compile 'com.zaxxer:HikariCP:+'
-    compile 'org.springframework:spring-orm:4.3.12.RELEASE'
+    compile 'org.springframework:spring-orm:4.3.13.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:5.0.12.Final'
     compile 'javax.el:javax.el-api:+'
     compile 'org.hsqldb:hsqldb:+'
@@ -60,13 +60,13 @@ dependencies {
     //compile 'org.pegdown:pegdown:1.6.0'
 
     //markdown processor
-    compile 'com.vladsch.flexmark:flexmark-all:0.28.8'
+    compile 'com.vladsch.flexmark:flexmark-all:0.28.20'
 
     // spring data
-    compile 'org.springframework.data:spring-data-jpa:1.11.8.RELEASE'
+    compile 'org.springframework.data:spring-data-jpa:1.11.9.RELEASE'
 
     // cache
-    compile 'org.springframework.data:spring-data-redis:1.8.8.RELEASE'
+    compile 'org.springframework.data:spring-data-redis:1.8.9.RELEASE'
     compile 'redis.clients:jedis:2.9.0'
 
     // MySQL
@@ -76,7 +76,7 @@ dependencies {
     compile 'org.postgresql:postgresql:42.1.1'
 
     // Validation
-    compile 'org.hibernate:hibernate-validator:5.3.5.Final'
+    compile 'org.hibernate:hibernate-validator:5.3.6.Final'
 
     // Logging
     compile 'ch.qos.logback:logback-classic:1.2.3'
@@ -96,9 +96,6 @@ dependencies {
     compile 'org.projectlombok:lombok:1.16.16'
     //compile 'com.qiniu:qiniu-java-sdk:7.0.+'
 
-    // JSON support
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
-
     // static resources, ref. http://www.webjars.org/
     compile 'org.webjars:jquery:3.2.1'
     compile 'org.webjars:bootstrap:3.3.7-1'
@@ -109,7 +106,7 @@ dependencies {
     // providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     // test
-    testCompile("org.springframework.boot:spring-boot-starter-test:1.5.8.RELEASE")
+    testCompile("org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE")
     testCompile 'junit:junit:+'
     testCompile 'org.mockito:mockito-core:+'
     testCompile 'org.assertj:assertj-core:+'
@@ -123,7 +120,7 @@ dependencies {
 
 buildscript {
     ext {
-        springBootVersion = '1.5.8.RELEASE'
+        springBootVersion = '1.5.9.RELEASE'
     }
 
     repositories {
