@@ -1,7 +1,10 @@
 package com.raysmond.blog.admin.controllers;
 
 import com.raysmond.blog.forms.SettingsForm;
+import com.raysmond.blog.models.dto.VisitStatDTO;
+import com.raysmond.blog.models.dto.VisitsStatsChartDTO;
 import com.raysmond.blog.services.AppSetting;
+import com.raysmond.blog.services.StatisticsService;
 import com.raysmond.blog.support.web.MessageHelper;
 import com.raysmond.blog.utils.DTOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Raysmond<i@raysmond.com>
@@ -21,15 +29,12 @@ import javax.validation.Valid;
 @RequestMapping("admin")
 public class AdminController {
 
+    @Autowired
     private AppSetting appSetting;
 
-    @Autowired
-    public AdminController( AppSetting appSetting){
-        this.appSetting = appSetting;
-    }
 
     @RequestMapping("")
-    public String index(){
+    public String index() {
         return "admin/home/index";
     }
 

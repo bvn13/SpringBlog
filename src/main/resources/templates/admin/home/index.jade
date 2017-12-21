@@ -3,3 +3,22 @@ extends ../layout/admin
 block content
   h1 Admin Dashboard
   hr
+
+
+  #visitsStatsContainer(style="min-width: 310px; height: 400px; margin: 0 auto")
+
+
+
+  script
+    :javascript
+      $(document).ready(function() {
+
+          $.get('/admin/stats/visits')
+              .done(function(data) {
+                  Highcharts.chart('visitsStatsContainer', data);
+              })
+              .fail(function () {
+                  $("#visitsStatsContainer").text("ERROR");
+              });
+
+      });

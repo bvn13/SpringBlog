@@ -1,4 +1,6 @@
 
+
+
 select v.post_id, count(distinct v.clientip)
 from visits as v
 left join seo_robots_agents as ra
