@@ -19,7 +19,7 @@ SpringBlog is powered by many powerful frameworks and third-party projects:
 - [Webjars](http://www.webjars.org/) - A client-side web libraries packaged into JAR files. A easy way to manage JavaScript and CSS vendors in Gradle.
 - [Redis](http://redis.io/) - A very powerful in-memory data cache server.
 - [Prism](http://prismjs.com) - syntax highlighter
-- [HighCharts](https://www.highcharts.com/)
+- [HighCharts](https://www.highcharts.com/) - charts JS-library
 
 ## Changelog
 
