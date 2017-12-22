@@ -5,10 +5,10 @@ import com.raysmond.blog.error.NotFoundException;
 import com.raysmond.blog.models.Post;
 import com.raysmond.blog.models.SeoPostData;
 import com.raysmond.blog.models.Tag;
-import com.raysmond.blog.models.User;
 import com.raysmond.blog.models.support.PostFormat;
 import com.raysmond.blog.models.support.PostStatus;
 import com.raysmond.blog.models.support.PostType;
+import com.raysmond.blog.notificators.Notificator;
 import com.raysmond.blog.repositories.PostRepository;
 import com.raysmond.blog.repositories.SeoPostDataRepository;
 import com.raysmond.blog.support.web.MarkdownService;
@@ -50,6 +50,9 @@ public class PostService {
 
     @Autowired
     private SeoPostDataRepository seoPostDataRepository;
+
+    @Autowired
+    private Notificator notificator;
 
 
     public static final String CACHE_NAME = "cache.post";
@@ -106,7 +109,8 @@ public class PostService {
             @CacheEvict(value = CACHE_NAME_COUNTS, allEntries = true)
     })
     public Post createPost(Post post) {
-        return this.savePost(post);
+        Post result = this.savePost(post);
+        return result;
     }
 
     @Caching(evict = {

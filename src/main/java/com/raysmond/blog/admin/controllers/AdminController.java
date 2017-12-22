@@ -56,6 +56,7 @@ public class AdminController {
             appSetting.setPageSize(settingsForm.getPageSize());
             appSetting.setStoragePath(settingsForm.getStoragePath());
             appSetting.setMainUri(settingsForm.getMainUri());
+            appSetting.setTelegramMasterChatId(settingsForm.getTelegramMasterChatId());
 
             MessageHelper.addSuccessAttribute(ra, "Update settings successfully.");
 

@@ -29,6 +29,10 @@ block content
           td.setting-label Main URI
           td.input
             input.form-control(type="text", name="mainUri", value="#{settings.getMainUri()}")
+        tr
+          td.setting-label Telegram master chat ID
+          td.input
+            input.form-control(type="text", name="telegramMasterChatId", value="#{settings.getTelegramMasterChatId()}")
 
       tr
           td.setting-label 

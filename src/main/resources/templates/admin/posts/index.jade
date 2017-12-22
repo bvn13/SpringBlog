@@ -40,6 +40,8 @@ block content
                   i.fa.fa-edit
                 a.btn.btn-xs.btn-danger.btn-delete(href="javascript:deletePost(#{post.id})", postId="#{post.id}")
                   i.fa.fa-trash-o
+                a.btn.btn-xs.btn-default(href="javascript:notifyTelegram(#{post.id})", postId="#{post.id}")
+                  i.fa.fa-telegram
                   
                 form(id="form-#{post.getId()}",style="visibility: hidden", method="post", action="/admin/posts/#{post.getId()}/delete")
                   input(type="hidden", name='_csrf', value='#{_csrf.token}')
@@ -55,6 +57,25 @@ block content
         if (confirm("Are you sure to delete post @"+postId)) {
           $('#form-'+postId).submit();
         }
+      }
+
+      function notifyTelegram(postId) {
+          var token = $("input[name='_csrf']").val();
+          var header = "X-CSRF-TOKEN";
+          $(document).ajaxSend(function (e, xhr, options) {
+              xhr.setRequestHeader(header, token);
+          });
+          $.post('/admin/notify/'+postId+'/telegram')
+              .done(function (result) {
+                  if (result.error) {
+                      alert(result.message);
+                  } else {
+                      alert("sended");
+                  }
+              })
+              .fail(function () {
+                  alert("Error connecting with server")
+              });
       }
 
       $(function(){

@@ -27,4 +27,7 @@ public class SettingsForm {
     @NotNull
     private String mainUri;
 
+    @NotNull
+    private String telegramMasterChatId;
+
 }

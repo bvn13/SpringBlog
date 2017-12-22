@@ -22,12 +22,15 @@ public class AppSetting {
     private Integer pageSize = 5;
     private String storagePath = "/tmp";
     private String mainUri = "http://localhost/";
+    private String telegramMasterChatId = "";
 
     public static final String SITE_NAME = "site_name";
     public static final String SITE_SLOGAN = "site_slogan";
     public static final String PAGE_SIZE = "page_size";
     public static final String STORAGE_PATH = "storage_path";
     public static final String MAIN_URI = "main_uri";
+    public static final String TELEGRAM_MASTER_CHAT_ID = "telegram_master_chat_id";
+
 
     @Autowired
     public AppSetting(SettingService settingService){
@@ -71,12 +74,34 @@ public class AppSetting {
     }
 
     public String getMainUri() {
-        return (String) settingService.get(MAIN_URI, mainUri);
+        String uri = (String) settingService.get(MAIN_URI, mainUri);
+        if (!uri.endsWith("/")) {
+            uri += "/";
+        }
+        return uri;
+    }
+
+    public String getMainUriStripped() {
+        String uri = (String) settingService.get(MAIN_URI, mainUri);
+        if (uri.endsWith("/")) {
+            uri = uri.substring(0, uri.length()-1);
+        }
+        return uri;
     }
 
     public void setMainUri(String mainUri) {
         this.mainUri = mainUri;
         settingService.put(MAIN_URI, mainUri);
+    }
+
+    public String getTelegramMasterChatId() {
+        String id = (String) settingService.get(TELEGRAM_MASTER_CHAT_ID, "");
+        return id;
+    }
+
+    public void setTelegramMasterChatId(String id) {
+        this.telegramMasterChatId = id;
+        settingService.put(TELEGRAM_MASTER_CHAT_ID, id);
     }
 
     public List<String> getOgLocales() {

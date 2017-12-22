@@ -1,11 +1,14 @@
 package com.raysmond.blog.support.web;
 
 import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.ext.enumerated.reference.EnumeratedReferenceExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension;
 import com.vladsch.flexmark.ext.youtube.embedded.YouTubeLinkExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,8 +27,10 @@ public class FlexmarkMarkdownService implements MarkdownService, SyntaxHighlight
         options.set(Parser.EXTENSIONS, Arrays.asList(
                 TablesExtension.create(),
                 StrikethroughExtension.create(),
-                //YoutubeLinkTransformer.YouTubeLinkExtension.create(),
-                YouTubeLinkExtension.create()
+                YouTubeLinkExtension.create(),
+                WikiLinkExtension.create(),
+                SuperscriptExtension.create()/*,
+                EnumeratedReferenceExtension.create()*/
         ));
 
         // uncomment to convert soft-breaks to hard breaks

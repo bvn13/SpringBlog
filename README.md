@@ -20,8 +20,15 @@ SpringBlog is powered by many powerful frameworks and third-party projects:
 - [Redis](http://redis.io/) - A very powerful in-memory data cache server.
 - [Prism](http://prismjs.com) - syntax highlighter
 - [HighCharts](https://www.highcharts.com/) - charts JS-library
+- [TelegramBots](https://github.com/rubenlagus/TelegramBots) - telegram bot API for sending announcements of posts into Telegram Channel
 
 ## Changelog
+
+#### 2017-12-22 - SpringBlog version 2.8.0 is released
+
+* __SpringBoot updated upto 1.4.9__
+* Added announcements for posts
+* Implemented Telegram Bot aimed at sending posts announcements into Telegram Channel
 
 #### 2017-12-21
 

@@ -11,3 +11,4 @@ production_app.properties
 *.iws
 src/main/resources/resources/bower_components
 temp
+private

@@ -24,6 +24,9 @@ public class PostForm {
     @NotEmpty
     private String content;
 
+
+    private String announcement;
+
     @NotNull
     private PostFormat postFormat;
 

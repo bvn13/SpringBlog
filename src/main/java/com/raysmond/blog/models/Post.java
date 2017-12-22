@@ -36,6 +36,9 @@ public class Post extends BaseModel {
     @Type(type = "text")
     private String renderedContent;
 
+    @Type(type = "text")
+    private String announcement;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus = PostStatus.PUBLISHED;

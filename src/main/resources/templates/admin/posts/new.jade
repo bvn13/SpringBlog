@@ -21,77 +21,95 @@ block content
       input(type="hidden", name='_csrf', value='#{_csrf.token}')
     .item-row
       input.form-control(type="text", name="title", value='#{postForm.getTitle()}')
+
     .item-row
-      textarea.form-control#content(name="content", style="display:none;")
-        = postForm.getContent()
-      div#content-editor
-        = postForm.getContent()
-    .item-row
-      hr
-      .row
-        .col-sm-3
-          span Format
-          select.form-control(name="postFormat")
-            for format in postFormats
-              if format != postForm.getPostFormat()
-                option(value="#{format.getId()}") #{format.getName()}
-              else 
-                option(value="#{format.getId()}", selected="selected") #{format.getName()}
-        .col-sm-3
-          span Status
-          select.form-control(name="postStatus")
-            for status in postStatus
-              if status != postForm.getPostStatus()
-                option(value="#{status.getId()}") #{status.getName()}
-              else 
-                option(value="#{status.getId()}", selected="selected") #{status.getName()}
-        
-        .col-sm-3
-          span Permalink
-          input.form-control(name="permalink", value="#{postForm.getPermalink()}")
-        
-        .col-sm-3
-          span Tags
-          input.form-control(name="postTags", value="#{postForm.getPostTags()}")
+      ul#pages-tabs.nav.nav-tabs.nav-justified
+        li#tab-page-announce.active(role="presentation")
+          a#btn-page-announce(href="#") Announce
+        li#tab-page-content(role="presentation")
+          a#btn-page-content(href="#") Content
 
-      hr
-      .row
-        .col-sm-3
-          span Seo Keywords
-          input.form-control(name="seoKeywords", value="#{postForm.getSeoKeywords()}")
+    div#pages
 
-        .col-sm-3
-          span Seo Description
-          input.form-control(name="seoDescription", value="#{postForm.getSeoDescription()}")
+      div#page-announce
 
-      hr
-      h5 Open Graph
-      .row
-        .col-sm-3
-          span Type
-          select.form-control(name="seoOgType")
-            for ogType in seoOgTypes
-              if postForm.getSeoOgType() == ogType
-                option(value="#{ogType.getId()}", selected="selected") #{ogType.getName()}
-              else
-                option(value="#{ogType.getId()}") #{ogType.getName()}
+        .item-row
+          textarea.form-control#announcement(name="announcement")
+            = postForm.getAnnouncement()
 
-        .col-sm-3
-          span Image link
-          input.form-control(name="seoOgImage", value="#{postForm.getSeoOgImage()}")
+      div#page-content(style="display:none")
 
-        .col-sm-3
-          span Video link
-          input.form-control(name="seoOgVideo", value="#{postForm.getSeoOgVideo()}")
+        .item-row
+          textarea.form-control#content(name="content", style="display:none;")
+            = postForm.getContent()
+          div#content-editor
+            = postForm.getContent()
+        .item-row
+          hr
+          .row
+            .col-sm-3
+              span Format
+              select.form-control(name="postFormat")
+                for format in postFormats
+                  if format != postForm.getPostFormat()
+                    option(value="#{format.getId()}") #{format.getName()}
+                  else
+                    option(value="#{format.getId()}", selected="selected") #{format.getName()}
+            .col-sm-3
+              span Status
+              select.form-control(name="postStatus")
+                for status in postStatus
+                  if status != postForm.getPostStatus()
+                    option(value="#{status.getId()}") #{status.getName()}
+                  else
+                    option(value="#{status.getId()}", selected="selected") #{status.getName()}
 
-        .col-sm-3
-          span Locale
-          select.form-control(name="seoOgLocale")
-            for ogLocale in seoOgLocales
-              if postForm.getSeoOgLocale() == ogLocale
-                option(value="#{ogLocale.getId()}", selected="selected") #{ogLocale.getName()}
-              else
-                option(value="#{ogLocale.getId()}") #{ogLocale.getName()}
+            .col-sm-3
+              span Permalink
+              input.form-control(name="permalink", value="#{postForm.getPermalink()}")
+
+            .col-sm-3
+              span Tags
+              input.form-control(name="postTags", value="#{postForm.getPostTags()}")
+
+          hr
+          .row
+            .col-sm-3
+              span Seo Keywords
+              input.form-control(name="seoKeywords", value="#{postForm.getSeoKeywords()}")
+
+            .col-sm-3
+              span Seo Description
+              input.form-control(name="seoDescription", value="#{postForm.getSeoDescription()}")
+
+          hr
+          h5 Open Graph
+          .row
+            .col-sm-3
+              span Type
+              select.form-control(name="seoOgType")
+                for ogType in seoOgTypes
+                  if postForm.getSeoOgType() == ogType
+                    option(value="#{ogType.getId()}", selected="selected") #{ogType.getName()}
+                  else
+                    option(value="#{ogType.getId()}") #{ogType.getName()}
+
+            .col-sm-3
+              span Image link
+              input.form-control(name="seoOgImage", value="#{postForm.getSeoOgImage()}")
+
+            .col-sm-3
+              span Video link
+              input.form-control(name="seoOgVideo", value="#{postForm.getSeoOgVideo()}")
+
+            .col-sm-3
+              span Locale
+              select.form-control(name="seoOgLocale")
+                for ogLocale in seoOgLocales
+                  if postForm.getSeoOgLocale() == ogLocale
+                    option(value="#{ogLocale.getId()}", selected="selected") #{ogLocale.getName()}
+                  else
+                    option(value="#{ogLocale.getId()}") #{ogLocale.getName()}
 
 
 
@@ -115,4 +133,25 @@ block content
       $("form").submit(function(){
           $("#content").val(editor.getValue());
           return true;
+      });
+
+      $(document).ready(function () {
+          // page Announcement
+          $("#btn-page-announce").click(function () {
+              $("#page-announce").show();
+              $("#page-content").hide();
+              $("#pages-tabs li").each(function () {
+                  $(this).removeClass("active");
+              });
+              $("#tab-page-announce").addClass("active");
+          });
+          //page Content
+          $("#btn-page-content").click(function () {
+              $("#page-announce").hide();
+              $("#page-content").show();
+              $("#pages-tabs li").each(function () {
+                  $(this).removeClass("active");
+              });
+              $("#tab-page-content").addClass("active");
+          });
       });

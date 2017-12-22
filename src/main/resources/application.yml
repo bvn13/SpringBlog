@@ -1,41 +1,51 @@
 server:
-    port: 8001
-    contextPath:
+  port: 8001
+  contextPath:
+
+
+telegram:
+  bot:
+    enabled: true
+    name: bvn13_blog_bot
+    channel: bvn13_blog
+    token_file: private/telegram_bot.token
+    master_id : bvn13
+
 
 spring:
-    profiles:
-      active: dev
+  profiles:
+    active: dev
 
-    thymeleaf:
-      cache: false
+  thymeleaf:
+    cache: false
 
-    jade4j:
-      caching: false
+  jade4j:
+    caching: false
 
-    dataSource:
-      driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://localhost:5432/blog
-      username: blog
-      password: blogpass
+  dataSource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/blog
+    username: blog
+    password: blogpass
 
-    hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-      hbm2ddl.auto: update
-      show_sql: true
-      use_sql_comments: true
-      format_sql: true
+  hibernate:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+    hbm2ddl.auto: update
+    show_sql: true
+    use_sql_comments: true
+    format_sql: true
 
-    redis:
-      host: localhost
-      port: 6379
-      default_expire_time: 86400
+  redis:
+    host: localhost
+    port: 6379
+    default_expire_time: 86400
 
 
-    session:
-      store-type: redis
+  session:
+    store-type: redis
 
-    http:
-      multipart:
-        max-file-size: 100Mb
-        max-request-size: 100Mb
+  http:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
 
