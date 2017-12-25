@@ -44,8 +44,35 @@ public class StatisticsService {
         return result;
     }
 
-    public VisitsStatsChartDTO getVisitsStatsChartData() {
+    public List<Object> getVisitsStatsByPeriodAndPostsList(Date periodStart, Date periodEnd, List<Integer> postsIdList) {
 
+        Session session = (Session) this.entityManager.getDelegate();
+        SQLQuery query = session.createSQLQuery(
+                "select data.dt, data.post_id, data.title, data.count from (" +
+                        "select date_trunc('day', v.createdat) as dt, v.post_id, p.title, count(distinct v.clientip) as count " +
+                        "from visits as v " +
+                        "left join seo_robots_agents as ra " +
+                        "on case when ra.isregexp then lower(nullif(v.useragent,'')) ~* lower(ra.useragent) " +
+                        "else lower(nullif(v.useragent,'')) like concat('%',lower(ra.useragent),'%') end " +
+                        "inner join posts as p " +
+                        "on v.post_id = p.id " +
+                        "where v.isadmin = false " +
+                        "and ra.id isnull " +
+                        "group by date_trunc('day', v.createdat), v.post_id, p.title " +
+                        ") as data " +
+                        "where data.dt >= :periodStart and data.dt <= :periodEnd and data.post_id in (:postsIdList)"
+        );
+
+        query.setParameter("periodStart", periodStart);
+        query.setParameter("periodEnd", periodEnd);
+        query.setParameterList("postsIdList", postsIdList);
+
+        List<Object> result = query.list();
+
+        return result;
+    }
+
+    private VisitsStatsChartDTO convertDataToChart(List<Object> list) {
         VisitsStatsChartDTO chart = new VisitsStatsChartDTO();
         chart.getChart().setType("line");
         chart.getTitle().setText("Visits Statistics");
@@ -59,7 +86,6 @@ public class StatisticsService {
         Map<String, Map<Date, Long>> data = new HashMap<>();
 
 
-        List<Object> list = getVisitsStats();
         for (Object vs : list) {
             Object[] vsa = (Object[]) vs;
 
@@ -102,6 +128,16 @@ public class StatisticsService {
         }
 
         return chart;
+    }
+
+    public VisitsStatsChartDTO getFullVisitsStatsChartData() {
+        List<Object> list = getVisitsStats();
+        return convertDataToChart(list);
+    }
+
+    public VisitsStatsChartDTO getChartDataByPeriodAndPostsList(Date periodStart, Date periodEnd, List<Integer> postsIdList) {
+        List<Object> list = getVisitsStatsByPeriodAndPostsList(periodStart, periodEnd, postsIdList);
+        return convertDataToChart(list);
     }
 
 }

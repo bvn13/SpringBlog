@@ -20,7 +20,10 @@ public class Notificator {
     private TelegramBotManager telegramBot;
 
 
-    public void announcePost(Post post) throws TelegramApiException {
+    public void announcePost(Post post) throws IllegalArgumentException, TelegramApiException {
+        if (post == null || post.getAnnouncement().isEmpty()) {
+            throw new IllegalArgumentException("Nothing to announce");
+        }
         String postUrl = appSetting.getMainUriStripped()+"/posts/"+(post.getPermalink().isEmpty() ? post.getId() : post.getPermalink());
         String message = String.format(
                 "*%s*\r\n\n" +

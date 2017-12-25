@@ -21,8 +21,13 @@ SpringBlog is powered by many powerful frameworks and third-party projects:
 - [Prism](http://prismjs.com) - syntax highlighter
 - [HighCharts](https://www.highcharts.com/) - charts JS-library
 - [TelegramBots](https://github.com/rubenlagus/TelegramBots) - telegram bot API for sending announcements of posts into Telegram Channel
+- [Date Range Picker](http://www.daterangepicker.com) - A JavaScript component for choosing date ranges. Designed to work with the Bootstrap CSS framework.
 
 ## Changelog
+
+#### 2017-12-25
+
+* Added chart filters into admin dashboard using [Date Range Picker](http://www.daterangepicker.com)
 
 #### 2017-12-22 - SpringBlog version 2.8.0 is released
 

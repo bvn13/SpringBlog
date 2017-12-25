@@ -5,6 +5,7 @@ import com.raysmond.blog.error.NotFoundException;
 import com.raysmond.blog.models.Post;
 import com.raysmond.blog.models.SeoPostData;
 import com.raysmond.blog.models.Tag;
+import com.raysmond.blog.models.dto.PostIdTitleDTO;
 import com.raysmond.blog.models.support.PostFormat;
 import com.raysmond.blog.models.support.PostStatus;
 import com.raysmond.blog.models.support.PostType;
@@ -221,6 +222,10 @@ public class PostService {
         return this.postRepository.findAllByPostTypeAndPostStatus(PostType.POST, PostStatus.PUBLISHED);
     }
 
+    public List<Post> getAllPosts() {
+        return this.postRepository.findAll();
+    }
+
     public Post createAboutPage() {
         logger.debug("Create default about page");
 
@@ -313,6 +318,20 @@ public class PostService {
             SeoPostData data = post.getSeoData();
             this.seoPostDataRepository.save(data);
         }
+    }
+
+    public List<PostIdTitleDTO> getPostsIdTitleList() {
+        List<PostIdTitleDTO> result = new ArrayList<>();
+        this.getAllPosts().forEach(p -> {
+            result.add(new PostIdTitleDTO(p.getId(), p.getTitle()));
+        });
+        Collections.sort(result, new Comparator<PostIdTitleDTO>() {
+            @Override
+            public int compare(PostIdTitleDTO o1, PostIdTitleDTO o2) {
+                return Long.compare(o2.getId(), o1.getId());
+            }
+        });
+        return result;
     }
 
 }

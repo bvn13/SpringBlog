@@ -40,6 +40,9 @@ public class NotificatorController {
             try {
                 notificator.announcePost(post);
                 return new PostAnnouncementDTO(false);
+            } catch (IllegalArgumentException iae) {
+                iae.printStackTrace();
+                return new PostAnnouncementDTO(true, iae.getMessage());
             } catch (TelegramApiException e) {
                 e.printStackTrace();
                 return new PostAnnouncementDTO(true, "Error occures");

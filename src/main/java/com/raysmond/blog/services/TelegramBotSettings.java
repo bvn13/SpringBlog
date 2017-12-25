@@ -30,7 +30,7 @@ public class TelegramBotSettings {
     public String botTokenFile;
 
     @Getter
-    @Value("${telegram.bot.master_id}")
+    @Value("${telegram.bot.master_name}")
     public String masterName;
 
 

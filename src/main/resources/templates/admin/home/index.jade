@@ -4,21 +4,104 @@ block content
   h1 Admin Dashboard
   hr
 
+  .post-form
+    .row-item
+      input(type="hidden", name="_csrf" value="#{_csrf.token}")
 
-  #visitsStatsContainer(style="min-width: 310px; height: 400px; margin: 0 auto")
+    .row.mt-5
+      .col-sm-8
+        div#daterange.pull-right.form-control(style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%")
+          i.glyphicon.glyphicon-calendar.fa.fa-calendar
+          span -
+          b.caret
+          input#dateStart(name="start", type="hidden")
+          input#dateEnd(name="end", type="hidden")
+
+      .col-sm-2
+        button#filterVisitsStats.btn.btn-primary.btn-block(onclick="javascript:doFilter();") Filter
+
+      .col-sm-2
+        button.btn.btn-default.btn-block(onclick="javascript:fullChart();") Clear filter
+
+     .row.mt-5
+       .col-sm-12
+         select#posts.form-control(multiple, type="checkbox", size="7")
+          for post in posts
+            option(value="#{post.getId()}") #{post.getId()} / #{post.getTitle()}
+
+
+
+  .row.mt-15
+      #visitsStatsContainer(style="min-width: 310px; height: 400px; margin: 0 auto")
 
 
 
   script
     :javascript
-      $(document).ready(function() {
-
-          $.get('/admin/stats/visits')
-              .done(function(data) {
-                  Highcharts.chart('visitsStatsContainer', data);
+      function dateFormat(d) {
+          var date = d.getDate();
+          var month = d.getMonth() + 1;
+          var year = d.getFullYear();
+          return "" + date + "-" + month + "-" + year;
+      }
+      function cb(start, end) {
+          $("#daterange span").html(" " + start.format("DD-MM-YYYY") + " - " + end.format("DD-MM-YYYY"));
+          $("#dateStart").val(start.format('DD-MM-YYYY'));
+          $("#dateEnd").val(end.format('DD-MM-YYYY'));
+      }
+      function fullChart() {
+          $("#posts").val([]);
+          doFilter();
+          // $.get('/admin/stats/visits')
+          //     .done(function (data) {
+          //         Highcharts.chart('visitsStatsContainer', data);
+          //     })
+          //     .fail(function () {
+          //         $("#visitsStatsContainer").text("ERROR");
+          //     });
+      }
+      function doFilter() {
+          var postsIds = $("#posts").val();
+          if (postsIds.length == 0) {
+              postsIds = $("#posts option").map(function (n, op) {
+                  return $(op).val();
+              }).toArray();
+          }
+          $.ajax({
+              type: 'post',
+              contentType: 'application/json',
+              url: '/admin/stats/visits?start=' + $("#dateStart").val() + '&end=' + $("#dateEnd").val(),
+              data: JSON.stringify({
+                  ids: postsIds
+              })
+          })
+              .done(function (data) {
+                  if (data.series.length == 0) {
+                      $("#visitsStatsContainer").text("Nothing to show");
+                  } else {
+                      Highcharts.chart('visitsStatsContainer', data);
+                  }
               })
               .fail(function () {
                   $("#visitsStatsContainer").text("ERROR");
               });
-
+      }
+      $(document).ready(function () {
+          var periodEnd = moment();
+          var periodStart = moment().subtract(7, 'days');
+          $("#daterange").daterangepicker({
+              startDate: periodStart,
+              endDate: periodEnd
+          }, cb);
+          cb(periodStart, periodEnd);
+          $('#daterange').on('apply.daterangepicker', function (ev, picker) {
+              cb(picker.startDate, picker.endDate);
+          });
+          $('#daterange').on('show.daterangepicker', function (ev, picker) {
+              cb(picker.startDate, picker.endDate);
+          });
+          var token = $("input[name='_csrf']").val();
+          var header = "X-CSRF-TOKEN";
+          $(document).ajaxSend(function (e, xhr, options) {xhr.setRequestHeader(header, token);});
+          fullChart();
       });

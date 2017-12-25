@@ -9,7 +9,7 @@ telegram:
     name: bvn13_blog_bot
     channel: bvn13_blog
     token_file: private/telegram_bot.token
-    master_id : bvn13
+    master_name : bvn13
 
 
 spring:

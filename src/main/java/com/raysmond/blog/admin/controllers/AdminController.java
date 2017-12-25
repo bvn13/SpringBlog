@@ -4,6 +4,7 @@ import com.raysmond.blog.forms.SettingsForm;
 import com.raysmond.blog.models.dto.VisitStatDTO;
 import com.raysmond.blog.models.dto.VisitsStatsChartDTO;
 import com.raysmond.blog.services.AppSetting;
+import com.raysmond.blog.services.PostService;
 import com.raysmond.blog.services.StatisticsService;
 import com.raysmond.blog.support.web.MessageHelper;
 import com.raysmond.blog.utils.DTOUtil;
@@ -32,9 +33,13 @@ public class AdminController {
     @Autowired
     private AppSetting appSetting;
 
+    @Autowired
+    private PostService postService;
+
 
     @RequestMapping("")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("posts", postService.getPostsIdTitleList());
         return "admin/home/index";
     }
 

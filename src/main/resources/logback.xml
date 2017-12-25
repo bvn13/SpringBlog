@@ -22,7 +22,7 @@
 
 	<logger name="com.raysmond.blog.controllers" level="WARN"/>
 
-	<logger name="com.raysmond.blog.admin.controllers" level="WARN"/>
+	<logger name="com.raysmond.blog.admin.controllers" level="DEBUG"/>
 
     <logger name="com.raysmond.blog.notificators.telegram" level="DEBUG" />
 	<logger name="com.raysmond.blog.notificators.telegram.TelegramBotManager.TelegramBot" level="DEBUG" />
