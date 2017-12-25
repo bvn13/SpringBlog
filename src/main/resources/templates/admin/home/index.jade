@@ -9,7 +9,7 @@ block content
       input(type="hidden", name="_csrf" value="#{_csrf.token}")
 
     .row.mt-5
-      .col-sm-8
+      .col-sm-8.col-xs-12
         div#daterange.pull-right.form-control(style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%")
           i.glyphicon.glyphicon-calendar.fa.fa-calendar
           span -
@@ -17,14 +17,14 @@ block content
           input#dateStart(name="start", type="hidden")
           input#dateEnd(name="end", type="hidden")
 
-      .col-sm-2
+      .col-sm-2.col-xs-12
         button#filterVisitsStats.btn.btn-primary.btn-block(onclick="javascript:doFilter();") Filter
 
-      .col-sm-2
+      .col-sm-2.col-xs-12
         button.btn.btn-default.btn-block(onclick="javascript:fullChart();") Clear filter
 
      .row.mt-5
-       .col-sm-12
+       .col-sm-12.col-xs-12
          select#posts.form-control(multiple, type="checkbox", size="7")
           for post in posts
             option(value="#{post.getId()}") #{post.getId()} / #{post.getTitle()}
