@@ -174,4 +174,7 @@ I recommend you import the source code into Intellij IDE to edit the code.
   ```
 
 ## License
-Modified BSD license. Copyright (c) 2015, Jiankun LEI (Raysmond).
+Modified BSD license. 
+Copyright (c) 
+2015 - Jiankun LEI (Raysmond), 
+2017 - Vyacheslav Boyko (bvn13).
