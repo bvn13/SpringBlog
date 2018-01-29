@@ -1,15 +1,19 @@
 package com.raysmond.blog.admin.controllers;
 
 import com.raysmond.blog.forms.PostForm;
+import com.raysmond.blog.forms.PostPreviewForm;
 import com.raysmond.blog.models.Post;
 import com.raysmond.blog.models.Tag;
 import com.raysmond.blog.models.User;
+import com.raysmond.blog.models.dto.PostPreviewDTO;
 import com.raysmond.blog.models.support.*;
 import com.raysmond.blog.repositories.PostRepository;
 import com.raysmond.blog.repositories.UserRepository;
 import com.raysmond.blog.services.AppSetting;
 import com.raysmond.blog.services.PostService;
 import com.raysmond.blog.services.TagService;
+import com.raysmond.blog.support.web.FlexmarkMarkdownService;
+import com.raysmond.blog.support.web.MarkdownService;
 import com.raysmond.blog.utils.DTOUtil;
 import com.raysmond.blog.utils.PaginatorUtil;
 import org.hibernate.Hibernate;
@@ -17,14 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
@@ -46,6 +50,9 @@ public class PostController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MarkdownService markdownService;
 
     private static final int PAGE_SIZE = 20;
 
@@ -164,7 +171,16 @@ public class PostController {
         }
     }
 
+    @RequestMapping(value = "/preview", method = {PUT, POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    PostPreviewDTO preview(@RequestBody @Valid PostPreviewForm postPreviewForm, Errors errors, Model model) throws Exception {
 
+        if (errors.hasErrors()) {
+            throw new Exception("Error occurred!");
+        }
+
+        return new PostPreviewDTO(markdownService.renderToHtml(postPreviewForm.getContent()));
+    }
 
 
 }

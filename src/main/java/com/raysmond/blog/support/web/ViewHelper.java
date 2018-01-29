@@ -27,21 +27,21 @@ public class ViewHelper {
 
     private static Logger logger = LoggerFactory.getLogger(ViewHelper.class);
 
-    private static DateFormatSymbols ruDateFormatSymbolsFull = new DateFormatSymbols(){
-        @Override
-        public String[] getMonths() {
-            return new String[]{"январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"};
-        }
-    };
-    private static DateFormatSymbols ruDateFormatSymbolsShort = new DateFormatSymbols(){
-        @Override
-        public String[] getMonths() {
-            return new String[]{"янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"};
-        }
-    };
+//    private static DateFormatSymbols ruDateFormatSymbolsFull = new DateFormatSymbols(){
+//        @Override
+//        public String[] getMonths() {
+//            return new String[]{"январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"};
+//        }
+//    };
+//    private static DateFormatSymbols ruDateFormatSymbolsShort = new DateFormatSymbols(){
+//        @Override
+//        public String[] getMonths() {
+//            return new String[]{"янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"};
+//        }
+//    };
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd, yyyy", ViewHelper.ruDateFormatSymbolsFull);
-    private static final SimpleDateFormat DATE_FORMAT_MONTH_DAY = new SimpleDateFormat("MMM dd", ViewHelper.ruDateFormatSymbolsShort);
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd, yyyy"); //, ViewHelper.ruDateFormatSymbolsFull);
+    private static final SimpleDateFormat DATE_FORMAT_MONTH_DAY = new SimpleDateFormat("MMM dd"); //, ViewHelper.ruDateFormatSymbolsShort);
 
     private AppSetting appSetting;
 

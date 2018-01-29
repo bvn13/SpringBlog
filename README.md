@@ -25,6 +25,10 @@ SpringBlog is powered by many powerful frameworks and third-party projects:
 
 ## Changelog
 
+#### 2018-01-29
+
+* Implemented live post content preview without saving
+
 #### 2017-12-25
 
 * Added chart filters into admin dashboard using [Date Range Picker](http://www.daterangepicker.com)
