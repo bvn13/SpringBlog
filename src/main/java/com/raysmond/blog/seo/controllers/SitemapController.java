@@ -1,7 +1,6 @@
 package com.raysmond.blog.seo.controllers;
 
 import com.raysmond.blog.models.Post;
-import com.raysmond.blog.repositories.PostRepository;
 import com.raysmond.blog.services.PostService;
 import com.raysmond.blog.services.SeoService;
 import org.springframework.beans.factory.annotation.Autowired;

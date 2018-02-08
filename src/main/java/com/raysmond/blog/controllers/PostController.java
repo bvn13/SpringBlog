@@ -33,9 +33,6 @@ public class PostController {
     private PostService postService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private VisitService visitService;
 
     @Autowired

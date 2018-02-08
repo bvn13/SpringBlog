@@ -3,20 +3,13 @@ package com.raysmond.blog.admin.controllers;
 import com.raysmond.blog.forms.PostForm;
 import com.raysmond.blog.forms.PostPreviewForm;
 import com.raysmond.blog.models.Post;
-import com.raysmond.blog.models.Tag;
-import com.raysmond.blog.models.User;
 import com.raysmond.blog.models.dto.PostPreviewDTO;
 import com.raysmond.blog.models.support.*;
-import com.raysmond.blog.repositories.PostRepository;
 import com.raysmond.blog.repositories.UserRepository;
-import com.raysmond.blog.services.AppSetting;
 import com.raysmond.blog.services.PostService;
-import com.raysmond.blog.services.TagService;
-import com.raysmond.blog.support.web.FlexmarkMarkdownService;
 import com.raysmond.blog.support.web.MarkdownService;
 import com.raysmond.blog.utils.DTOUtil;
 import com.raysmond.blog.utils.PaginatorUtil;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,9 +35,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class PostController {
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
     private PostService postService;
 
     @Autowired
@@ -58,7 +47,7 @@ public class PostController {
 
     @RequestMapping(value = "")
     public String index(@RequestParam(defaultValue = "0") int page, Model model){
-        Page<Post> posts = postRepository.findAll(new PageRequest(page, PAGE_SIZE, Sort.Direction.DESC, "id"));
+        Page<Post> posts = postService.findAllPosts(new PageRequest(page, PAGE_SIZE, Sort.Direction.DESC, "id"));
 
         model.addAttribute("totalPages", posts.getTotalPages());
         model.addAttribute("page", page);
@@ -96,7 +85,7 @@ public class PostController {
     }
 
     private String makeFormPostEdition(Long postId, Model model, PostForm postForm) {
-        Post post = postRepository.findOne(postId);
+        Post post = postService.getPost(postId);
 
         if (postForm == null) {
             postForm = DTOUtil.map(post, PostForm.class);
@@ -123,7 +112,7 @@ public class PostController {
 
     @RequestMapping(value = "{postId:[0-9]+}/delete", method = {DELETE, POST})
     public String deletePost(@PathVariable Long postId){
-        postService.deletePost(postRepository.findOne(postId));
+        postService.deletePost(postId);
         return "redirect:/admin/posts";
     }
 
@@ -160,7 +149,7 @@ public class PostController {
             model.addAttribute("errors", webErrors);
             return this.makeFormPostEdition(postId, model, postForm);
         } else {
-            Post post = postRepository.findOne(postId);
+            Post post = postService.getPost(postId);
             DTOUtil.mapTo(postForm, post);
             post.setTags(postService.parseTagNames(postForm.getPostTags()));
             postForm.fillOgFieldsInPost(post);
@@ -175,7 +164,7 @@ public class PostController {
     public @ResponseBody
     PostPreviewDTO preview(@RequestBody @Valid PostPreviewForm postPreviewForm, Errors errors, Model model) throws Exception {
 
-        if (errors.hasErrors()) {
+         if (errors.hasErrors()) {
             throw new Exception("Error occurred!");
         }
 

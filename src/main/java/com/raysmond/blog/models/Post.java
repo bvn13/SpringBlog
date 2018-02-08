@@ -24,6 +24,9 @@ import java.util.Set;
 public class Post extends BaseModel {
     private static final SimpleDateFormat SLUG_DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
 
+    @Column(nullable = false, columnDefinition = "boolean DEFAULT false")
+    private Boolean deleted;
+
     @ManyToOne
     private User user;
 

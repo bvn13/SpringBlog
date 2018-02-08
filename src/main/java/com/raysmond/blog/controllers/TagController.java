@@ -3,8 +3,6 @@ package com.raysmond.blog.controllers;
 import com.raysmond.blog.error.NotFoundException;
 import com.raysmond.blog.models.Post;
 import com.raysmond.blog.models.Tag;
-import com.raysmond.blog.repositories.PostRepository;
-import com.raysmond.blog.repositories.TagRepository;
 import com.raysmond.blog.services.AppSetting;
 import com.raysmond.blog.services.PostService;
 import com.raysmond.blog.services.TagService;

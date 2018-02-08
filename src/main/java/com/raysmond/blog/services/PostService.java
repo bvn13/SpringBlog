@@ -71,7 +71,7 @@ public class PostService {
 
         Post post = postRepository.findOne(postId);
 
-        if (post == null) {
+        if (post == null || post.getDeleted()) {
             throw new NotFoundException("Post with id " + postId + " is not found.");
         }
 
@@ -82,7 +82,7 @@ public class PostService {
     public Post getPublishedPost(Long postId) {
         logger.debug("Get published post " + postId);
 
-        Post post = this.postRepository.findByIdAndPostStatus(postId, PostStatus.PUBLISHED);
+        Post post = this.postRepository.findByIdAndPostStatusAndDeleted(postId, PostStatus.PUBLISHED, false);
 
         if (post == null) {
             throw new NotFoundException("Post with id " + postId + " is not found.");
@@ -95,7 +95,7 @@ public class PostService {
     public Post getPublishedPostByPermalink(String permalink) {
         logger.debug("Get post with permalink " + permalink);
 
-        Post post = postRepository.findByPermalinkAndPostStatus(permalink, PostStatus.PUBLISHED);
+        Post post = postRepository.findByPermalinkAndPostStatusAndDeleted(permalink, PostStatus.PUBLISHED, false);
 
         if (post == null) {
             throw new NotFoundException("Post with permalink '" + permalink + "' is not found.");
@@ -148,17 +148,36 @@ public class PostService {
             @CacheEvict(value = CACHE_NAME_COUNTS, allEntries = true)
     })
     public void deletePost(Post post) {
-        postRepository.delete(post);
+        post.setDeleted(true);
+        postRepository.save(post);
+        //postRepository.delete(post);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = CACHE_NAME, key = "#post.id"),
+            @CacheEvict(value = CACHE_NAME, key = "#post.permalink", condition = "#post.permalink != null"),
+            @CacheEvict(value = CACHE_NAME_TAGS, key = "#post.id.toString().concat('-tags')"),
+            @CacheEvict(value = CACHE_NAME_SEO_KEYWORDS, key = "#post.id.toString().concat('-seoKeywords')"),
+            @CacheEvict(value = CACHE_NAME_ARCHIVE, allEntries = true),
+            @CacheEvict(value = CACHE_NAME_PAGE, allEntries = true),
+            @CacheEvict(value = CACHE_NAME_COUNTS, allEntries = true)
+    })
+    public void deletePost(Long postId) {
+        Post post = postRepository.findOne(postId);
+        post.setDeleted(true);
+        postRepository.save(post);
+        //postRepository.delete(post);
     }
 
     @Cacheable(value = CACHE_NAME_ARCHIVE, key = "#root.method.name")
     public List<Post> getArchivePosts() {
         logger.debug("Get all archive posts from database.");
 
-        Iterable<Post> posts = postRepository.findAllByPostTypeAndPostStatus(
+        Iterable<Post> posts = postRepository.findAllByPostTypeAndPostStatusAndDeleted(
                 PostType.POST,
                 PostStatus.PUBLISHED,
-                new PageRequest(0, Integer.MAX_VALUE, Sort.Direction.DESC, "createdAt"));
+                new PageRequest(0, Integer.MAX_VALUE, Sort.Direction.DESC, "createdAt"),
+                false);
 
         List<Post> cachedPosts = new ArrayList<>();
         posts.forEach(post -> cachedPosts.add(extractPostMeta(post)));
@@ -203,10 +222,11 @@ public class PostService {
     public Page<Post> getAllPublishedPostsByPage(int page, int pageSize) {
         logger.debug("Get posts by page " + page);
 
-        Page<Post> posts = postRepository.findAllByPostTypeAndPostStatus(
+        Page<Post> posts = postRepository.findAllByPostTypeAndPostStatusAndDeleted(
                 PostType.POST,
                 PostStatus.PUBLISHED,
-                new PageRequest(page, pageSize, Sort.Direction.DESC, "createdAt"));
+                new PageRequest(page, pageSize, Sort.Direction.DESC, "createdAt"),
+                false);
 
         posts.forEach(p -> {
             p.setSympathyCount(this.likeService.getTotalLikesByPost(p));
@@ -219,7 +239,7 @@ public class PostService {
     public List<Post> getAllPublishedPosts() {
         logger.debug("Get all published posts");
 
-        return this.postRepository.findAllByPostTypeAndPostStatus(PostType.POST, PostStatus.PUBLISHED);
+        return this.postRepository.findAllByPostTypeAndPostStatusAndDeleted(PostType.POST, PostStatus.PUBLISHED, false);
     }
 
     public List<Post> getAllPosts() {
@@ -332,6 +352,11 @@ public class PostService {
             }
         });
         return result;
+    }
+
+
+    public Page<Post> findAllPosts(PageRequest pageRequest) {
+        return postRepository.findAllByDeleted(pageRequest, false);
     }
 
 }
