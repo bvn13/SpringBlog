@@ -18,6 +18,10 @@ import java.util.Set;
  */
 @Data
 public class PostForm {
+
+    @NotNull
+    private Boolean deleted;
+
     @NotEmpty
     private String title;
 

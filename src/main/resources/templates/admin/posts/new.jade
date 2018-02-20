@@ -20,24 +20,28 @@ block content
     .item-row
       input(type="hidden", name='_csrf', value='#{_csrf.token}')
     .item-row
+      input(type="hidden", name='deleted', value='false')
+    .item-row
       input.form-control(type="text", name="title", value='#{postForm.getTitle()}')
 
     .item-row
       ul#pages-tabs.nav.nav-tabs.nav-justified
-        li#tab-page-announce.active(role="presentation")
+        li#tab-page-announce(role="presentation")
           a#btn-page-announce(href="#") Announce
-        li#tab-page-content(role="presentation")
+        li#tab-page-content.active(role="presentation")
           a#btn-page-content(href="#") Content
+        li#tab-page-preview(role="presentation")
+          a#btn-page-preview(href="#") Preview
 
     div#pages
 
-      div#page-announce
+      div#page-announce(style="display:none")
 
         .item-row
           textarea.form-control#announcement(name="announcement")
             = postForm.getAnnouncement()
 
-      div#page-content(style="display:none")
+      div#page-content
 
         .item-row
           textarea.form-control#content(name="content", style="display:none;")
@@ -111,6 +115,11 @@ block content
                   else
                     option(value="#{ogLocale.getId()}") #{ogLocale.getName()}
 
+      div#page-preview(style="display:none")
+
+        .item-row
+          div#content-preview
+            img#loading.loading.borderless(src="/images/loading.gif")
 
 
     .item-row
@@ -138,8 +147,9 @@ block content
       $(document).ready(function () {
           // page Announcement
           $("#btn-page-announce").click(function () {
-              $("#page-announce").show();
+              $("#page-preview").hide();
               $("#page-content").hide();
+              $("#page-announce").show();
               $("#pages-tabs li").each(function () {
                   $(this).removeClass("active");
               });
@@ -148,10 +158,41 @@ block content
           //page Content
           $("#btn-page-content").click(function () {
               $("#page-announce").hide();
+              $("#page-preview").hide();
               $("#page-content").show();
               $("#pages-tabs li").each(function () {
                   $(this).removeClass("active");
               });
               $("#tab-page-content").addClass("active");
+          });
+          //page Preview
+          $("#btn-page-preview").click(function () {
+              $("#page-announce").hide();
+              $("#page-content").hide();
+              $("#page-preview").show();
+              $("#pages-tabs li").each(function () {
+                  $(this).removeClass("active");
+              });
+              $("#tab-page-preview").addClass("active");
+
+              $("#content-preview").html("<img class='loading borderless' src='/images/loading.gif'/>");
+              var token = $("input[name='_csrf']").val();
+              var header = "X-CSRF-TOKEN";
+              $(document).ajaxSend(function (e, xhr, options) {
+                  xhr.setRequestHeader(header, token);
+              });
+              $.ajax({
+                  type: 'post',
+                  contentType: 'application/json',
+                  url: '/admin/posts/preview',
+                  data: JSON.stringify({
+                      content: editor.getValue()
+                  })
+              }).done(function (data) {
+                  $("#content-preview").html(data.content);
+              }).fail(function () {
+                  $("#content-preview").html("<img class='loading-error borderless' src='/images/icon_error.svg'/>");
+              });
+
           });
       });

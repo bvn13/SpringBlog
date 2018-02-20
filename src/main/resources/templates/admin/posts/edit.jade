@@ -20,6 +20,8 @@ block content
     .item-row
       input(type="hidden", name='_csrf', value='#{_csrf.token}')
     .item-row
+      input(type="hidden", name='deleted', value='false')
+    .item-row
       input.form-control(type="text", name="title", value='#{postForm.getTitle()}')
 
     .item-row
