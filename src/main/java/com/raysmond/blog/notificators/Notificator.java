@@ -27,11 +27,12 @@ public class Notificator {
         String postUrl = appSetting.getMainUriStripped()+"/posts/"+(post.getPermalink().isEmpty() ? post.getId() : post.getPermalink());
         String message = String.format(
                 "*%s*\r\n\n" +
+                "[%s](%s)\r\n\r\n"+
                 "%s\r\n\r\n" +
-                "[%s](%s)",
+                "",
                 post.getTitle(),
-                post.getAnnouncement() != null ? post.getAnnouncement() : "",
-                postUrl, postUrl
+                postUrl, postUrl,
+                post.getAnnouncement() != null ? post.getAnnouncement() : ""
         );
         telegramBot.sendMessageToChannel(message);
     }

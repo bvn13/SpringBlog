@@ -62,6 +62,7 @@ public class AdminController {
             appSetting.setStoragePath(settingsForm.getStoragePath());
             appSetting.setMainUri(settingsForm.getMainUri());
             appSetting.setTelegramMasterChatId(settingsForm.getTelegramMasterChatId());
+            appSetting.setSubscriptionLink(settingsForm.getSubscriptionLink());
 
             MessageHelper.addSuccessAttribute(ra, "Update settings successfully.");
 

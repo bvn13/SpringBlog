@@ -2,14 +2,22 @@ package com.raysmond.blog.notificators.telegram;
 
 import com.raysmond.blog.services.AppSetting;
 import com.raysmond.blog.services.TelegramBotSettings;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.ApiContext;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -40,6 +48,15 @@ public class TelegramBotManager {
 
 
         public TelegramBot(TelegramBotManager manager, String name, String token, String masterName, String masterChatId) {
+            this.manager = manager;
+            this.name = name;
+            this.token = token;
+            this.masterName = masterName;
+            this.masterChatId = masterChatId;
+        }
+
+        public TelegramBot(TelegramBotManager manager, String name, String token, String masterName, String masterChatId, DefaultBotOptions options) {
+            super(options);
             this.manager = manager;
             this.name = name;
             this.token = token;
@@ -139,12 +156,39 @@ public class TelegramBotManager {
             ApiContextInitializer.init();
             TelegramBotsApi botsApi = new TelegramBotsApi();
 
-            this.bot = new TelegramBot(this,
-                    settings.getBotName(),
-                    settings.getBotToken(),
-                    settings.getMasterName(),
-                    appSetting.getTelegramMasterChatId()
-            );
+            if (settings.isProxySet()) {
+
+                // Set up Http proxy
+                DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
+
+                CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(
+                        new AuthScope(settings.getProxyHost(), settings.getProxyPort()),
+                        new UsernamePasswordCredentials(settings.getProxyUsername(), settings.getProxyPassword()));
+
+                HttpHost httpHost = new HttpHost(settings.getProxyHost(), settings.getProxyPort());
+
+                RequestConfig requestConfig = RequestConfig.custom().setProxy(httpHost).setAuthenticationEnabled(true).build();
+                botOptions.setRequestConfig(requestConfig);
+                botOptions.setCredentialsProvider(credsProvider);
+                botOptions.setHttpProxy(httpHost);
+
+                this.bot = new TelegramBot(this,
+                        settings.getBotName(),
+                        settings.getBotToken(),
+                        settings.getMasterName(),
+                        appSetting.getTelegramMasterChatId(),
+                        botOptions
+                );
+            } else {
+
+                this.bot = new TelegramBot(this,
+                        settings.getBotName(),
+                        settings.getBotToken(),
+                        settings.getMasterName(),
+                        appSetting.getTelegramMasterChatId()
+                );
+            }
 
             try {
                 botsApi.registerBot(this.bot);

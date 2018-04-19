@@ -4,6 +4,8 @@ nav.navbar.navbar-bright
       a.navbar-brand(href="/") #{App.getSiteName()}
     div#navbar
       ul.nav.navbar-nav.navbar-right
+        if App.getSubscriptionLink() != null && !App.getSubscriptionLink().isEmpty()
+          li: a(href="#{App.getSubscriptionLink()}" target="_blank") Subscribe
         li: a(href="/posts/archive") Blog
         li: a(href="/tags") Tags
         li: a(href="/posts/projects") Projects

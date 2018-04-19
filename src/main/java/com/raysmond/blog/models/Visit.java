@@ -24,7 +24,7 @@ public class Visit extends BaseModel {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isAdmin;
 
-    @Column
+    @Column(columnDefinition = "VARCHAR")
     private String userAgent;
 
 }

@@ -6,12 +6,12 @@ apply plugin: 'org.springframework.boot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = '2.8.2'
+version = '2.9.1'
 
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
-    mavenLocal()
 
     maven { url 'http://repo.spring.io/libs-release' }
     maven { url "http://repo.springsource.org/repo" }
@@ -102,7 +102,7 @@ dependencies {
     compile 'org.webjars:ace:1.2.8'
 
     // telegram bot api
-    compile 'org.telegram:telegrambots:3.5'
+    compile 'org.telegram:telegrambots:3.6'
 
     // test
     testCompile("org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE")
@@ -123,9 +123,9 @@ buildscript {
     }
 
     repositories {
+        mavenLocal()
         mavenCentral()
         jcenter()
-        mavenLocal()
 
         maven { url "http://repo.spring.io/release" }
         maven { url "http://repo.spring.io/milestone" }

@@ -12,11 +12,11 @@
 
 	<jmxConfigurator />
 
-	<logger name="com.raysmond.blog" level="WARN"/>
+	<logger name="com.raysmond.blog" level="DEBUG"/>
 
 	<logger name="org.hibernate.SQL" level="WARN"/>
 
-	<!--<logger name="org.hibernate.type" level="TRACE"/>-->
+	<logger name="org.hibernate.type" level="TRACE"/>
 
 	<logger name="org.springframework.web" level="ERROR"/>
 
@@ -24,8 +24,8 @@
 
 	<logger name="com.raysmond.blog.admin.controllers" level="DEBUG"/>
 
-    <logger name="com.raysmond.blog.notificators.telegram" level="DEBUG" />
-	<logger name="com.raysmond.blog.notificators.telegram.TelegramBotManager.TelegramBot" level="DEBUG" />
+    <logger name="com.raysmond.blog.notificators.telegram" level="ERROR" />
+	<logger name="com.raysmond.blog.notificators.telegram.TelegramBotManager.TelegramBot" level="ERROR" />
 
 	<root level="WARN">
 		<appender-ref ref="STDOUT" />

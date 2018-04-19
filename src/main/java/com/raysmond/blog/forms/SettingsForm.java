@@ -30,4 +30,6 @@ public class SettingsForm {
     @NotNull
     private String telegramMasterChatId;
 
+    @NotNull
+    private String subscriptionLink;
 }

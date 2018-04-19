@@ -10,6 +10,11 @@ telegram:
     channel: bvn13_blog
     token_file: private/telegram_bot.token
     master_name : bvn13
+    proxy:
+      host:
+      port:
+      username:
+      password:
 
 
 spring:

@@ -23,6 +23,7 @@ public class AppSetting {
     private String storagePath = "/tmp";
     private String mainUri = "http://localhost/";
     private String telegramMasterChatId = "";
+    private String subscriptionLink = "";
 
     public static final String SITE_NAME = "site_name";
     public static final String SITE_SLOGAN = "site_slogan";
@@ -30,7 +31,7 @@ public class AppSetting {
     public static final String STORAGE_PATH = "storage_path";
     public static final String MAIN_URI = "main_uri";
     public static final String TELEGRAM_MASTER_CHAT_ID = "telegram_master_chat_id";
-
+    public static final String SUBSCRIPTION_LINK = "subscription_link";
 
     @Autowired
     public AppSetting(SettingService settingService){
@@ -95,13 +96,21 @@ public class AppSetting {
     }
 
     public String getTelegramMasterChatId() {
-        String id = (String) settingService.get(TELEGRAM_MASTER_CHAT_ID, "");
-        return id;
+        return (String) settingService.get(TELEGRAM_MASTER_CHAT_ID, telegramMasterChatId);
     }
 
     public void setTelegramMasterChatId(String id) {
         this.telegramMasterChatId = id;
         settingService.put(TELEGRAM_MASTER_CHAT_ID, id);
+    }
+
+    public String getSubscriptionLink() {
+        return (String) settingService.get(SUBSCRIPTION_LINK, subscriptionLink);
+    }
+
+    public void setSubscriptionLink(String link) {
+        this.subscriptionLink = link;
+        settingService.put(SUBSCRIPTION_LINK, link);
     }
 
     public List<String> getOgLocales() {
