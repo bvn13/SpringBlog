@@ -102,7 +102,7 @@ dependencies {
     compile 'org.webjars:ace:1.2.8'
 
     // telegram bot api
-    compile 'org.telegram:telegrambots:3.6'
+    compile 'org.telegram:telegrambots:3.6.1'
 
     // test
     testCompile("org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE")

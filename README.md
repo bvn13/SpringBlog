@@ -28,7 +28,7 @@ SpringBlog is powered by many powerful frameworks and third-party projects:
 #### 2018-04-19
 
 * Added subscription link into NavBar
-* Implemented http proxy using for telegram notifier (NB! used dev branch of [TelegramBots](https://github.com/rubenlagus/TelegramBots) - it must be compilled manually)
+* Implemented http proxy using for telegram notifier
 
 #### 2018-01-29
 
