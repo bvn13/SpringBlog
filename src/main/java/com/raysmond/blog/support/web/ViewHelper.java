@@ -94,12 +94,12 @@ public class ViewHelper {
         if (number == null)
             return "0";
 
-        double thousands = number / 1000;
+        double thousands = (double) number / 1000;
         double millions = thousands / 1000;
-        if (millions > 0d) {
-            return String.format("%.3f", millions);
-        } else if (thousands > 0d) {
-            return String.format("%.3fK", thousands);
+        if (millions > 1d) {
+            return String.format("%.2f", millions);
+        } else if (thousands > 1d) {
+            return String.format("%.2fK", thousands);
         } else {
             return String.format("%d", number);
         }
