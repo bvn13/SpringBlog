@@ -1,6 +1,9 @@
 server:
   port: 8001
   contextPath:
+  servlet:
+    sesssion:
+      timeout: 86400
 
 
 telegram:

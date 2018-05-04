@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.abilitybots.api.bot.AbilityBot;
 import org.telegram.telegrambots.ApiContext;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
@@ -36,7 +37,7 @@ public class TelegramBotManager {
 
     // https://core.telegram.org/bots/api#sendmessage
 
-    public static class TelegramBot extends TelegramLongPollingBot {
+    public static class TelegramBot extends AbilityBot {
 
         private static Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
@@ -47,7 +48,13 @@ public class TelegramBotManager {
         private String masterChatId;
 
 
+        @Override
+        public int creatorId() {
+            return Integer.parseInt(masterChatId);
+        }
+
         public TelegramBot(TelegramBotManager manager, String name, String token, String masterName, String masterChatId) {
+            super(token, name);
             this.manager = manager;
             this.name = name;
             this.token = token;
@@ -56,7 +63,7 @@ public class TelegramBotManager {
         }
 
         public TelegramBot(TelegramBotManager manager, String name, String token, String masterName, String masterChatId, DefaultBotOptions options) {
-            super(options);
+            super(token, name, options);
             this.manager = manager;
             this.name = name;
             this.token = token;
@@ -192,6 +199,8 @@ public class TelegramBotManager {
 
             try {
                 botsApi.registerBot(this.bot);
+
+                this.isActive = true;
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -199,7 +208,7 @@ public class TelegramBotManager {
             this.isActive = true;
 
             try {
-                if (appSetting.getTelegramMasterChatId() != null && !appSetting.getTelegramMasterChatId().isEmpty()) {
+                if (isActive && appSetting.getTelegramMasterChatId() != null && !appSetting.getTelegramMasterChatId().isEmpty()) {
                     sendMessageToMaster("i'm online");
                 }
             } catch (TelegramApiException e) {

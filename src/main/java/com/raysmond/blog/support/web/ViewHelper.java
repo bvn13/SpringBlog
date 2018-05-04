@@ -133,4 +133,9 @@ public class ViewHelper {
                 url.startsWith("/") ? url.substring(1) : url
         );
     }
+
+    public String currentYear() {
+        Date now = new Date();
+        return (new SimpleDateFormat("yyyy")).format(now);
+    }
 }
