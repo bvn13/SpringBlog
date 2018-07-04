@@ -53,7 +53,7 @@ public class AppSetting {
         return adsenceHeadCode;
     }
 
-    @Value("${app.adsence.top")
+    @Value("${app.adsence.top}")
     private String adsenceTopCodePath;
     private String adsenceTopCode = null;
 
@@ -64,7 +64,7 @@ public class AppSetting {
         return adsenceTopCode;
     }
 
-    @Value("${app.adsence.bottom")
+    @Value("${app.adsence.bottom}")
     private String adsenceBottomCodePath;
     private String adsenceBottomCode = null;
 
