@@ -1,10 +1,17 @@
 package com.raysmond.blog.services;
 
 import com.raysmond.blog.services.SettingService;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import com.domingosuarez.boot.autoconfigure.jade4j.JadeHelper;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +21,8 @@ import java.util.List;
 @JadeHelper("App")
 @Service
 public class AppSetting {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppSetting.class);
 
     private SettingService settingService;
 
@@ -32,6 +41,57 @@ public class AppSetting {
     public static final String MAIN_URI = "main_uri";
     public static final String TELEGRAM_MASTER_CHAT_ID = "telegram_master_chat_id";
     public static final String SUBSCRIPTION_LINK = "subscription_link";
+
+    @Value("${app.adsence.head}")
+    private String adsenceHeadCodePath;
+    private String adsenceHeadCode = null;
+
+    public String getAdsenceHeadCode() {
+        if (adsenceHeadCode == null) {
+            adsenceHeadCode = readFile(adsenceHeadCodePath);
+        }
+        return adsenceHeadCode;
+    }
+
+    @Value("${app.adsence.top")
+    private String adsenceTopCodePath;
+    private String adsenceTopCode = null;
+
+    public String getAdsenceTopCode() {
+        if (adsenceTopCode == null) {
+            adsenceTopCode = readFile(adsenceTopCodePath);
+        }
+        return adsenceTopCode;
+    }
+
+    @Value("${app.adsence.bottom")
+    private String adsenceBottomCodePath;
+    private String adsenceBottomCode = null;
+
+    public String getAdsenceBottomCode() {
+        if (adsenceBottomCode == null) {
+            adsenceBottomCode = readFile(adsenceBottomCodePath);
+        }
+        return adsenceBottomCode;
+    }
+
+    private String readFile(String filePath) {
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try (BufferedReader reader
+                     = new BufferedReader(new InputStreamReader(
+                (new ClassPathResource(filePath)).getInputStream()
+        ))
+        ) {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            logger.error("ERROR loading file: "+filePath, e);
+            return "";
+        }
+    }
 
     @Autowired
     public AppSetting(SettingService settingService){

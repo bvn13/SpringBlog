@@ -138,4 +138,5 @@ public class ViewHelper {
         Date now = new Date();
         return (new SimpleDateFormat("yyyy")).format(now);
     }
+
 }

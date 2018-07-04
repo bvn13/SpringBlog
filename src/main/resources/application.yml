@@ -6,6 +6,12 @@ server:
         timeout: 86400
 
 
+app:
+  adsence:
+    head: private/adsence_head.code
+    top: private/adsence_top.code
+    bottom: private/adsence_bottom.code
+
 telegram:
   bot:
     enabled: true

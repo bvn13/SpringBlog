@@ -11,10 +11,17 @@ block page_title
 
 block content 
   .post
+
+    .ad_top
+      !{App.getAdsenceTopCode()}
+
     .content.markdown-body.my-font
       !{post.getRenderedContent()}
 
-    .info 
+    .ad_bottom
+      !{App.getAdsenceBottomCode()}
+
+    .info
       if !tags.isEmpty()
         ul.tags
           li Tags:

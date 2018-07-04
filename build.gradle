@@ -48,7 +48,7 @@ dependencies {
     compile 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
 
     //persistence
-    compile 'com.zaxxer:HikariCP:+'
+    compile 'com.zaxxer:HikariCP:2.7.8'
     compile 'org.springframework:spring-orm:4.3.13.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:5.0.12.Final'
     compile 'javax.el:javax.el-api:+'
