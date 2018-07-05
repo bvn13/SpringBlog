@@ -12,14 +12,17 @@ block page_title
 block content 
   .post
 
-    .ad_top
-      !{App.getAdsenceTopCode()}
+    .ad_adsence_top
+      !{Ads.getAdsenceTopCode()}
 
     .content.markdown-body.my-font
       !{post.getRenderedContent()}
 
-    .ad_bottom
-      !{App.getAdsenceBottomCode()}
+    .ad_adsence_bottom
+      !{Ads.getAdsenceBottomCode()}
+
+    .ad_yandex_bottom
+      !{Ads.getYandexBottomCode()}
 
     .info
       if !tags.isEmpty()
