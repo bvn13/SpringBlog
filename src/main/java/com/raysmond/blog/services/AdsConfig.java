@@ -1,12 +1,14 @@
 package com.raysmond.blog.services;
 
 import com.domingosuarez.boot.autoconfigure.jade4j.JadeHelper;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -21,47 +23,48 @@ public class AdsConfig {
 
     @Value("${app.ads.adsence.head}")
     private String adsenceHeadCodePath;
-    private String adsenceHeadCode = null;
-
-    public String getAdsenceHeadCode() {
-        if (adsenceHeadCode == null) {
-            adsenceHeadCode = readFile(adsenceHeadCodePath);
-        }
-        return adsenceHeadCode;
-    }
+    @Getter
+    private String adsenceHeadCode = "";
 
     @Value("${app.ads.adsence.top}")
     private String adsenceTopCodePath;
-    private String adsenceTopCode = null;
-
-    public String getAdsenceTopCode() {
-        if (adsenceTopCode == null) {
-            adsenceTopCode = readFile(adsenceTopCodePath);
-        }
-        return adsenceTopCode;
-    }
+    @Getter
+    private String adsenceTopCode = "";
 
     @Value("${app.ads.adsence.bottom}")
     private String adsenceBottomCodePath;
-    private String adsenceBottomCode = null;
-
-    public String getAdsenceBottomCode() {
-        if (adsenceBottomCode == null) {
-            adsenceBottomCode = readFile(adsenceBottomCodePath);
-        }
-        return adsenceBottomCode;
-    }
+    @Getter
+    private String adsenceBottomCode = "";
 
     @Value("${app.ads.yandex.bottom}")
     private String yandexBottomCodePath;
-    private String yandexBottomCode = null;
+    @Getter
+    private String yandexBottomCode = "";
 
-    public String getYandexBottomCode() {
-        if (yandexBottomCode == null) {
-            yandexBottomCode = readFile(yandexBottomCodePath);
-        }
-        return yandexBottomCode;
+    @Value("${app.ads.yandex.top}")
+    private String yandexTopCodePath;
+    @Getter
+    private String yandexTopCode = "";
+
+    @Value("${app.ads.yandex.main_page}")
+    private String yandexMainPageCodePath;
+    @Getter
+    private String yandexMainPageCode = "";
+
+
+    @PostConstruct
+    private void init() {
+        adsenceHeadCode = readFile(adsenceHeadCodePath);
+
+        adsenceTopCode = readFile(adsenceTopCodePath);
+        adsenceBottomCode = readFile(adsenceBottomCodePath);
+
+        yandexTopCode = readFile(yandexTopCodePath);
+        yandexBottomCode = readFile(yandexBottomCodePath);
+
+        yandexMainPageCode = readFile(yandexMainPageCodePath);
     }
+
 
     private String readFile(String filePath) {
         StringBuilder sb = new StringBuilder();

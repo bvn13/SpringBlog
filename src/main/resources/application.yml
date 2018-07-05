@@ -13,6 +13,8 @@ app:
       top: private/adsence_top.code
       bottom: private/adsence_bottom.code
     yandex:
+      main_page: private/yandex_main_page.code
+      top: private/yandex_top.code
       bottom: private/yandex_bottom.code
 
 telegram:

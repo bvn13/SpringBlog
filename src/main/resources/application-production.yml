@@ -6,12 +6,15 @@ server:
       timeout: 86400
 
 app:
-  adsence:
-    head: private/adsence_head.code
-    top: private/adsence_top.code
-    bottom: private/adsence_bottom.code
-  yandex:
-    bottom: private/yandex_bottom.code
+  ads:
+    adsence:
+      head: private/adsence_head.code
+      top: private/adsence_top.code
+      bottom: private/adsence_bottom.code
+    yandex:
+      main_page: private/yandex_main_page.code
+      top: private/yandex_top.code
+      bottom: private/yandex_bottom.code
 
 telegram:
   bot:

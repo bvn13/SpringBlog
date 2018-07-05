@@ -6,13 +6,14 @@ block page_title
   h1 #{App.getSiteName()}
   p.meta #{App.getSiteSlogan()}
 
-  // p Hi, there. I'm bvn13.
-
-block title 
+block title
   = App.getSiteName()
 
 block content
   include ../posts/index
+
+  .ads
+    !{Ads.getYandexMainPageCode()}
 
   .loadmore
     a.btn.btn-default(href="/posts/archive") More
