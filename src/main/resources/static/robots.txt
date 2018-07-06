@@ -2,4 +2,5 @@
 User-agent: *
 Disallow: /admin
 Disallow: /admin/*
+Disallow: /signin
 Host: https://bvn13.tk
