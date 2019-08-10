@@ -53,6 +53,8 @@ public class FileStorageService {
             throw new NotFoundException("File " + fileName + " is not found");
         }
 
+        file.setStoragePath(appSetting.getStoragePath());
+
         return file;
     }
 
@@ -72,7 +74,7 @@ public class FileStorageService {
         File file = new File(fullname);
 
         StoredFile storedFile = new StoredFile();
-        storedFile.setPath(path.toAbsolutePath().toString());
+        storedFile.setPath(filename);
         storedFile.setUser(this.userService.currentUser());
         storedFile.setTitle(filename);
         storedFile.setName(filename);
@@ -83,12 +85,11 @@ public class FileStorageService {
 
     public byte[] getFileContentById(Long fileId) throws IOException {
         StoredFile storedFile = this.repository.findById(fileId);
-        Path path = Paths.get(storedFile.getPath());
-        return Files.readAllBytes(path);
+        return getFileContent(storedFile);
     }
 
-    public byte[] getFileContent(String fullname) throws IOException {
-        Path path = Paths.get(fullname);
+    public byte[] getFileContent(StoredFile file) throws IOException {
+        Path path = Paths.get(file.getFullPath());
         return Files.readAllBytes(path);
     }
 

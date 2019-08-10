@@ -44,7 +44,7 @@ public class StoredFileController {
         }
         byte[] content;
         try {
-            content = this.storageService.getFileContent(file.getPath());
+            content = this.storageService.getFileContent(file);
         } catch (IOException e) {
             e.printStackTrace();
             if (this.userService.isCurrentUserAdmin()) {

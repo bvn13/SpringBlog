@@ -6,7 +6,7 @@ apply plugin: 'org.springframework.boot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = '2.9.2'
+version = '2.9.3'
 
 repositories {
     mavenLocal()

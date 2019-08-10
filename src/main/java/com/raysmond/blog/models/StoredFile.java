@@ -3,11 +3,9 @@ package com.raysmond.blog.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "stored_files")
@@ -28,6 +26,17 @@ public class StoredFile extends BaseModel {
 
     @Column(columnDefinition = "bigint default 0")
     private Long size;
+
+    @Transient
+    private String storagePath;
+
+    public String getFullPath() {
+        String separator = "";
+        if (!StringUtils.isEmpty(storagePath) && !storagePath.endsWith("//")) {
+            separator = "//";
+        }
+        return storagePath + separator + path;
+    }
 
     public String getSizeFormatted() {
         double bytes = this.getSize();
