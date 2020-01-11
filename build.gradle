@@ -6,7 +6,7 @@ apply plugin: 'org.springframework.boot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = '2.9.3'
+version = '2.9.4'
 
 repositories {
     mavenLocal()
@@ -102,7 +102,7 @@ dependencies {
     compile 'org.webjars:ace:1.2.8'
 
     // telegram bot api
-    compile 'org.telegram:telegrambots-abilities:3.6.1'
+    compile 'org.telegram:telegrambots-abilities:4.5'
 
     // test
     testCompile("org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE")

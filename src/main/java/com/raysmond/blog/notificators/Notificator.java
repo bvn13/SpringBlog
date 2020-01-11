@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  * Created by bvn13 on 21.12.2017.
@@ -24,7 +24,7 @@ public class Notificator {
     private TelegramBotManager telegramBot;
 
 
-    public void announcePost(Post post) throws IllegalArgumentException, TelegramApiException {
+    public void announcePost(Post post) throws Exception {
         if (post == null || post.getAnnouncement().isEmpty()) {
             throw new IllegalArgumentException("Nothing to announce");
         }

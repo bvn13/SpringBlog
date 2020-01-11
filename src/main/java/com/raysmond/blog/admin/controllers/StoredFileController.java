@@ -8,6 +8,7 @@ import com.raysmond.blog.services.FileStorageService;
 import com.raysmond.blog.services.UserService;
 import com.raysmond.blog.utils.DTOUtil;
 import com.raysmond.blog.utils.PaginatorUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,7 @@ import java.util.Date;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+@Slf4j
 @Controller("adminUploadController")
 @RequestMapping("admin/files")
 public class StoredFileController {
@@ -74,7 +76,7 @@ public class StoredFileController {
             redirectAttributes.addFlashAttribute("uploadStatus", message);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error", e);
             message = "Internal server error occured";
             redirectAttributes.addFlashAttribute("uploadStatus", message);
         }
@@ -129,7 +131,7 @@ public class StoredFileController {
         try {
             this.storageService.deleteFileById(fileId);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error", e);
         }
         return "redirect:/admin/files";
     }

@@ -1,9 +1,9 @@
 package com.raysmond.blog.services;
 
 import com.raysmond.blog.models.Post;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -19,6 +19,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+@Slf4j
 @Service
 public class SeoService {
 
@@ -69,11 +70,8 @@ public class SeoService {
             transformer.transform(new DOMSource(doc), new StreamResult(sw));
             return sw.toString();
 
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            return null;
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
+        } catch (ParserConfigurationException | TransformerException e) {
+            log.error("Error", e);
             return null;
         }
 

@@ -2,33 +2,30 @@ package com.raysmond.blog.notificators.telegram;
 
 import com.raysmond.blog.services.AppSetting;
 import com.raysmond.blog.services.TelegramBotSettings;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.BasicCredentialsProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.telegram.abilitybots.api.bot.AbilityBot;
-import org.telegram.telegrambots.ApiContext;
 import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.ApiContext;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.List;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 
 /**
  * Created by bvn13 on 21.12.2017.
  */
+@Slf4j
 @Component
 public class TelegramBotManager {
 
@@ -133,14 +130,14 @@ public class TelegramBotManager {
             try {
                 this.send(message, chatName);
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                log.error("Error", e);
             }
         }
         private void _send(String message, Long chatId) {
             try {
                 this.send(message, chatId);
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                log.error("Error", e);
             }
         }
     }
@@ -165,20 +162,21 @@ public class TelegramBotManager {
 
             if (settings.isProxySet()) {
 
+                // Create the Authenticator that will return auth's parameters for proxy authentication
+                Authenticator.setDefault(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(settings.getProxyUsername(), settings.getProxyPassword().toCharArray());
+                    }
+                });
+
                 // Set up Http proxy
                 DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
 
-                CredentialsProvider credsProvider = new BasicCredentialsProvider();
-                credsProvider.setCredentials(
-                        new AuthScope(settings.getProxyHost(), settings.getProxyPort()),
-                        new UsernamePasswordCredentials(settings.getProxyUsername(), settings.getProxyPassword()));
-
-                HttpHost httpHost = new HttpHost(settings.getProxyHost(), settings.getProxyPort());
-
-                RequestConfig requestConfig = RequestConfig.custom().setProxy(httpHost).setAuthenticationEnabled(true).build();
-                botOptions.setRequestConfig(requestConfig);
-                botOptions.setCredentialsProvider(credsProvider);
-                botOptions.setHttpProxy(httpHost);
+                botOptions.setProxyHost(settings.getProxyHost());
+                botOptions.setProxyPort(settings.getProxyPort());
+                // Select proxy type: [HTTP|SOCKS4|SOCKS5] (default: NO_PROXY)
+                botOptions.setProxyType(detectProxyType());
 
                 this.bot = new TelegramBot(this,
                         settings.getBotName(),
@@ -202,7 +200,7 @@ public class TelegramBotManager {
 
                 this.isActive = true;
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                log.error("Error", e);
             }
 
             this.isActive = true;
@@ -212,8 +210,17 @@ public class TelegramBotManager {
                     sendMessageToMaster("i'm online");
                 }
             } catch (TelegramApiException e) {
-                e.printStackTrace();
+                log.error("Error", e);
             }
+        }
+    }
+
+    private DefaultBotOptions.ProxyType detectProxyType() {
+        try {
+            return DefaultBotOptions.ProxyType.valueOf(settings.getProxyType());
+        } catch (IllegalArgumentException e) {
+            log.error("Unknown proxy type "+settings.getProxyType()+". Must be one of: "+ StringUtils.arrayToCommaDelimitedString(DefaultBotOptions.ProxyType.values()));
+            return DefaultBotOptions.ProxyType.NO_PROXY;
         }
     }
 

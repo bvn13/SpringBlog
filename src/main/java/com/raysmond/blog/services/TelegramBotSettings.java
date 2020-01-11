@@ -1,6 +1,7 @@
 package com.raysmond.blog.services;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import java.io.*;
 /**
  * Created by bvn13 on 21.12.2017.
  */
+@Slf4j
 @Component
 public class TelegramBotSettings {
 
@@ -46,6 +48,9 @@ public class TelegramBotSettings {
     @Getter
     @Value("${telegram.bot.proxy.password}")
     private String proxyPassword;
+    @Getter
+    @Value("${telegram.bot.proxy.type}")
+    private String proxyType;
 
     @Getter
     private Boolean inited = false;
@@ -80,7 +85,7 @@ public class TelegramBotSettings {
             botToken = sb.toString();
             inited = botToken.length() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error", e);
         }
     }
 

@@ -28,6 +28,7 @@ telegram:
       port:
       username:
       password:
+      type:
 
 
 spring:

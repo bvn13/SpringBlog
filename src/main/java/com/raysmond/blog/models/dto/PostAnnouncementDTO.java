@@ -1,9 +1,5 @@
 package com.raysmond.blog.models.dto;
 
-import lombok.Data;
-
-import java.io.Serializable;
-
 /**
  * Created by bvn13 on 22.12.2017.
  */
